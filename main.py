@@ -12,6 +12,7 @@ import admin, filters as word_filters, force_join, games, panel, welcome
 import wordfilter, tagall, timeinfo, forwardlock, content_locks, muteall, tone
 import settings_view, admincall, purge_bot, reminder, publicaccess, recent_messages
 import group_link, security
+from webserver import start_webserver
 from antispam import check_flood
 from registry import COMMANDS
 from permissions import can_run_admin_command
@@ -312,10 +313,22 @@ def build_application() -> Application:
 
 
 def main():
+
+    # مخصوص Render رایگان
+    # باز کردن پورت برای جلوگیری از خطای No open ports detected
+    start_webserver()
+
     init_db()
+
     app = build_application()
-    log.info(f"🤝 {BOT_NAME} با موفقیت استارت خورد و در حال گوش دادن به پیام‌هاست...")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+
+    log.info(
+        f"🤝 {BOT_NAME} با موفقیت استارت خورد و در حال گوش دادن به پیام‌هاست..."
+    )
+
+    app.run_polling(
+        allowed_updates=Update.ALL_TYPES
+    )
 
 
 if __name__ == "__main__":
